@@ -1,0 +1,157 @@
+
+{% extends 'main/base.html'%}
+{% block title %} ToDo Home {% endblock %}
+{% load static %}
+
+
+
+
+
+{% block content %} 
+
+<link 
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'main/bootstrap/css/bootstrap.css' %}"
+	type="text/css"
+	/>
+
+{% if user.is_authenticated %}
+
+	<!-- Image and text -->
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <!-- <img src="{% static '/main/images/Cover.png' %} " width="30" height="30" class="d-inline-block align-top" alt=""> -->
+    <h1>List of your to do list</h1>
+  </a>
+</nav>
+
+
+	
+	<img src=  "{% static '/main/images/Cover.png' %} " alt="Cover" style="width:300px" />
+	
+	{% if listnumb > 0 %}
+		<p>you have : {{listnumb}} to do lists </p>
+		<p>Here are your lists : </p>
+	{% endif %}
+	
+	
+
+
+
+
+
+	
+
+	
+	
+<form method="post" action="#">
+{% csrf_token %}
+	
+	
+	
+	
+		{% for td in user.todolist.all %}
+		
+			
+		
+			
+			{% if td.id != None%}
+			<table class="table table-dark table-hover table-bordered">
+		  <thead class="thead-dark">
+			<tr>
+			  <th scope="col">#</th>
+			  <th scope="col">{{td.name}} with {{td.item_set.all.count}} items </th>
+			  <th scope="col">Status   </th>
+			  <th scope="col">Owner </th>
+			  {% if ConditionToDleteItems == 1 and  TdToDel_id == td.id  %}
+			  <th scope="col"> Delete </th>
+			  {% endif %}
+			</tr>
+			</thead>
+				
+				
+	
+				{% for item in td.item_set.all %}
+				<!-- {{ listnumbTab|add:1}} -->
+				
+					
+
+					
+					  <tbody >
+						<tr>
+						  <th scope="row">{{forloop.counter}}  </th>
+						  <th scope="row">{{item.text}}   </th>
+						  <th scope="row">
+							{% if item.complete == True %}
+							<input type="checkbox", value="clicked", name="c{{item.id}}" , class="glyphicon glyphicon-star-empty" , checked >
+
+							
+							<!-- <button name="td{{td.id}}", value="tdnbr">td{{td.id}}</button> -->	
+							{% else %}
+							<input type="checkbox", value="clicked", name="c{{item.id}}" , class="glyphicon glyphicon-star-empty">
+					
+					<!-- <button name="td{{td.id}}", value="tdnbr">td{{td.id}}</button> -->
+							{% endif %}
+						  
+						  
+						     </th>
+						  <th scope="col"> {{item.owner}} </th>
+						
+					
+					
+						
+						
+					{% if ConditionToDleteItems == 1 and  TdToDel_id == td.id  %}
+					
+					<th scope="row"><input   type="checkbox", value="clicked", style="opacity:1", name="del{{item.id}}" >  </th>
+						
+						<!-- <input type="checkbox", value="clicked", name="del{{item.id}}:{{ConditionToDleteItems}}" > -->
+						
+					
+					{% else %}	
+						
+						<input type="checkbox", value="clicked" , style="opacity:0", name="del{{item.id}}">  
+					
+					{% endif %}
+						
+						
+						
+						
+				
+
+				{% endfor %}
+				</tr>
+				</tbody>
+				</table>
+				<br>
+				<button  name="newItem", value="newItem:{{td.id}}" , class="btn btn-primary btn-sm ">Add items to {{td.name}}</button>
+				<input type="text", name="new",value="type" >
+				<button  name="delItem", value="delItem:{{td.id}}" , class="btn btn-warning btn-sm  ">Delete items from {{td.name}}</button>
+				<br>
+				
+			{% else %}
+				{{ pass }}
+				
+					
+				
+			{% endif %}
+		{% endfor %}
+		
+		<br><br>
+		{% if listnumb > 0 %}
+			<button name="save", value="td:{{td.id}}:item:{{item.id}}", class="btn btn-dark">Save</button>
+		{% endif %}
+		
+		
+		
+	
+	
+	
+</form>
+	
+	
+{% else  %} 
+<meta http-equiv = "refresh" content = "0.5; url = /login" />	
+{% endif %}
+{% endblock %}

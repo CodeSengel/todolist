@@ -1,0 +1,39 @@
+{% extends 'main/base.html'%}
+{% block title %} ToDo Home {% endblock %}
+{% load static %}
+
+
+
+
+
+{% block content %} 
+
+<link 
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'main/bootstrap/css/bootstrap.css' %}"
+	type="text/css"
+	/>
+
+{% if user.is_authenticated %}
+
+	<!-- Image and text -->
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <!-- <img src="{% static '/main/images/Cover.png' %} " width="30" height="30" class="d-inline-block align-top" alt=""> -->
+    <h1>Hello {{uUserName.upper}} </h1>
+  </a>
+</nav>
+	
+	{% for td in user.todolist.all %}
+		{{ td.name}}
+	{% endfor %}
+
+
+
+
+
+{% else  %} 
+<meta http-equiv = "refresh" content = "0.5; url = /login" />
+{% endif  %}
+{% endblock %}
